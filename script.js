@@ -142,12 +142,27 @@ const quizArray = [
 }
 ]
 
-console.log(quizArray[0].question);
-console.log(quizArray[0].answer);
+//list of used indexes. We don't want to repeat questions!
+var usedIndexArray = [];
+var nextQuestion = [];
+function getQuestion() {
+    //Find a random index that hasn't already been used.  
+    var ranIndexNumber = Math.floor(Math.random() * quizArray.length);
+    //check to see if the number is in the array already 
+    if (usedIndexArray.includes(ranIndexNumber)) {
+        getQuestion();
+        return;
+    }
+    //if not, add to the array
+    else {
+        usedIndexArray.push(ranIndexNumber);
+        nextQuestion = quizArray[ranIndexNumber];
+        return nextQuestion;
+    }
+}
 
-console.log(quizArray[1].question);
-console.log(quizArray[1].option3);
-
+getQuestion();
+console.log((nextQuestion).question);
 
 //*************** */
 // USER STORIES I NEED TO WRITE 
