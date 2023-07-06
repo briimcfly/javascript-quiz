@@ -142,9 +142,16 @@ const quizArray = [
 }
 ]
 
+//Global
+var htmlQuestionButton = document.querySelectorAll(".option-btn");
+var htmlCurrentQuestionTitle = document.querySelector("#currentQuestionTitle");
+var nextButton = document.querySelector("#nextButton");
+
+
 //list of used indexes. We don't want to repeat questions!
 var usedIndexArray = [];
 var nextQuestion = [];
+var answerBlock = [];
 function getQuestion() {
     //Find a random index that hasn't already been used.  
     var ranIndexNumber = Math.floor(Math.random() * quizArray.length);
@@ -157,12 +164,35 @@ function getQuestion() {
     else {
         usedIndexArray.push(ranIndexNumber);
         nextQuestion = quizArray[ranIndexNumber];
+        answerBlock = [nextQuestion.answer, nextQuestion.option2, nextQuestion.option3, nextQuestion.option4, ]
         return nextQuestion;
     }
 }
 
 getQuestion();
-console.log((nextQuestion).question);
+console.log(nextQuestion);
+console.log(nextQuestion.answer);
+
+console.log(answerBlock[3]);
+
+function displayQuestion(){
+    //get the question and answers
+    getQuestion();
+    console.log(nextQuestion);
+    //add the question to the h2
+    htmlCurrentQuestionTitle.textContent = `${nextQuestion.question}`;
+    //add the answers to the option buttons
+
+
+    for (var i = nextQuestion.length - 1; i = 0 ; i--) {
+        htmlQuestionButton.textContent = `${answerBucket[i]}`
+        console.log(answerBucket[i]);
+    }
+
+}
+
+//HTML Injection
+nextButton.addEventListener("click", displayQuestion);
 
 //*************** */
 // USER STORIES I NEED TO WRITE 
