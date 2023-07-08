@@ -143,7 +143,7 @@ const quizArray = [
 ]
 
 //Global
-var htmlQuestionButton = document.querySelectorAll(".option-btn");
+var htmlQuestionButton = document.querySelectorAll("h3");
 var htmlCurrentQuestionTitle = document.querySelector("#currentQuestionTitle");
 var nextButton = document.querySelector("#nextButton");
 
@@ -185,7 +185,7 @@ function displayQuestion(){
 
 
     for (var i = nextQuestion.length - 1; i = 0 ; i--) {
-        htmlQuestionButton.textContent = `${answerBucket[i]}`
+        h3.textContent = `${answerBucket[i]}`
         console.log(answerBucket[i]);
     }
 
