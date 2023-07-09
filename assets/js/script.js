@@ -167,31 +167,36 @@ score = 0;
 
 //Function that gets the question from the quizArray once user presses button
 function getQuestion() {
-
+    //clear the previous batch of answers
+    choiceList.innerHTML = '';
     //Find a random index that hasn't already been used.  
-    var ranIndexNumber = Math.floor(Math.random() * quizArray.length);
+    let ranIndexNumber = Math.floor(Math.random() * quizArray.length);
 
-    //check to see if the number is in the array already 
+    //Check to make sure question hasn't already been asked
     if (usedIndexArray.includes(ranIndexNumber)) {
-        getQuestion();
-        return;
+        if (usedIndexArray.length == 20) {
+            alert("Quiz Over");
+        }
+        else {
+            getQuestion();
+            return;
+        }
     }
-    //if not, add to the array
+    //if not, add to the "Don't Ask Again" array and Return Question
     else {
         usedIndexArray.push(ranIndexNumber);
         nextQuestion = quizArray[ranIndexNumber];
         answerBlock = [nextQuestion.answer, nextQuestion.option2, nextQuestion.option3, nextQuestion.option4,];
         //shuffle the array to avoid patterns
         answerBlock.sort(() => Math.random() - 0.5);
-        o(answerBlock);
         return nextQuestion;
     }
 }
 
 //Function that unpacks nextQuestion and renders to screen
+
 function displayQuestion(){
-    //clear the previous batch of answers
-    choiceList.innerHTML = '';
+
 
     //get the question and answers
     getQuestion();
@@ -207,30 +212,39 @@ function displayQuestion(){
     optionButton.addEventListener("click", checkAnswer);
 
     
-    //Checking for the right answer 
+    //Cheater Code for Testing. Remove before final push.
     if (optionButton.textContent == nextQuestion.answer) {
         optionButton.style.backgroundColor = "red";
     }
     });
 
-    function checkAnswer(){
-        const remainingChoices = document.querySelectorAll(".wrong-option");
-        const scoreModifier = remainingChoices.length;
-        o(scoreModifier);
 
+//Function that checks the answer and apply a score 
+    function checkAnswer(){
+        //Possible Points Check. Get a count of "Incorrect Choices"
+        let remainingChoices = document.querySelectorAll(".wrong-option");
+        let scoreModifier = remainingChoices.length;
+
+        //If the selected Answer is right. Calculate score
         if (this.textContent == nextQuestion.answer) {
+            // No Wrong.. Give a point
             if (scoreModifier == 0) {
                 score++;
             }
+            // One Wrong.. 
             else if (scoreModifier == 1) {
                 score += 0.75;
             }
+            //Last Chance
             else {
                 score += 0.50;
             }
+
+            //Render the score and go to the next question
             dispalyScore.textContent = score;
             displayQuestion(); 
         }
+        // If user chooses all wrong answers, no points, skip to next question
         else {
             this.setAttribute("class","wrong-option");
             if (scoreModifier == 2) {
