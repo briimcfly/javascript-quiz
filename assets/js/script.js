@@ -177,7 +177,10 @@ function getQuestion() {
     else {
         usedIndexArray.push(ranIndexNumber);
         nextQuestion = quizArray[ranIndexNumber];
-        answerBlock = [nextQuestion.answer, nextQuestion.option2, nextQuestion.option3, nextQuestion.option4,]
+        answerBlock = [nextQuestion.answer, nextQuestion.option2, nextQuestion.option3, nextQuestion.option4,];
+        //shuffle the array to avoid patterns
+        answerBlock.sort(() => Math.random() - 0.5);
+        o(answerBlock);
         return nextQuestion;
     }
 }
@@ -199,6 +202,10 @@ function displayQuestion(){
     const optionButton = document.createElement("button");
     optionButton.textContent = option;
     choiceList.appendChild(optionButton);
+
+    if (optionButton.textContent == nextQuestion.answer) {
+        optionButton.style.backgroundColor = "red";
+    }
     });
 
 }
