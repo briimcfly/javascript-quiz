@@ -142,19 +142,32 @@ const quizArray = [
 }
 ]
 
-//Global
-var htmlQuestionButton = document.querySelectorAll("h3");
+//quick console log function.
+function o(nion){
+    console.log(nion);
+}
+
+//*************** */
+// GLOBAL VARIABLES
+//*****************
+
+var choiceList = document.querySelector("#choice-list");
 var htmlCurrentQuestionTitle = document.querySelector("#currentQuestionTitle");
 var nextButton = document.querySelector("#nextButton");
-
-
-//list of used indexes. We don't want to repeat questions!
 var usedIndexArray = [];
 var nextQuestion = [];
 var answerBlock = [];
+
+//*************** */
+// FUNCTIONS
+//*****************
+
+//Function that gets the question from the quizArray once user presses button
 function getQuestion() {
+
     //Find a random index that hasn't already been used.  
     var ranIndexNumber = Math.floor(Math.random() * quizArray.length);
+
     //check to see if the number is in the array already 
     if (usedIndexArray.includes(ranIndexNumber)) {
         getQuestion();
@@ -164,32 +177,32 @@ function getQuestion() {
     else {
         usedIndexArray.push(ranIndexNumber);
         nextQuestion = quizArray[ranIndexNumber];
-        answerBlock = [nextQuestion.answer, nextQuestion.option2, nextQuestion.option3, nextQuestion.option4, ]
+        answerBlock = [nextQuestion.answer, nextQuestion.option2, nextQuestion.option3, nextQuestion.option4,]
         return nextQuestion;
     }
 }
 
-getQuestion();
-console.log(nextQuestion);
-console.log(nextQuestion.answer);
 
-console.log(answerBlock[3]);
-
+//Function that unpacks nextQuestion and renders to screen
 function displayQuestion(){
+    //clear the previous batch of answers
+    choiceList.innerHTML = '';
+
     //get the question and answers
     getQuestion();
-    console.log(nextQuestion);
+
     //add the question to the h2
     htmlCurrentQuestionTitle.textContent = `${nextQuestion.question}`;
-    //add the answers to the option buttons
 
-
-    for (var i = nextQuestion.length - 1; i = 0 ; i--) {
-        h3.textContent = `${answerBucket[i]}`
-        console.log(answerBucket[i]);
-    }
+    //for every Answer Option, create and append to the Choice List
+    answerBlock.forEach((option) => {
+    const optionButton = document.createElement("button");
+    optionButton.textContent = option;
+    choiceList.appendChild(optionButton);
+    });
 
 }
+
 
 //HTML Injection
 nextButton.addEventListener("click", displayQuestion);
