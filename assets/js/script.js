@@ -154,9 +154,12 @@ function o(nion){
 var choiceList = document.querySelector("#choice-list");
 var htmlCurrentQuestionTitle = document.querySelector("#currentQuestionTitle");
 var nextButton = document.querySelector("#nextButton");
+var dispalyScore = document.querySelector("#score");
 var usedIndexArray = [];
 var nextQuestion = [];
 var answerBlock = [];
+optionButton = "";
+score = 0;
 
 //*************** */
 // FUNCTIONS
@@ -185,7 +188,6 @@ function getQuestion() {
     }
 }
 
-
 //Function that unpacks nextQuestion and renders to screen
 function displayQuestion(){
     //clear the previous batch of answers
@@ -199,19 +201,51 @@ function displayQuestion(){
 
     //for every Answer Option, create and append to the Choice List
     answerBlock.forEach((option) => {
-    const optionButton = document.createElement("button");
+    let optionButton = document.createElement("button");
     optionButton.textContent = option;
     choiceList.appendChild(optionButton);
+    optionButton.addEventListener("click", checkAnswer);
 
+    
+    //Checking for the right answer 
     if (optionButton.textContent == nextQuestion.answer) {
         optionButton.style.backgroundColor = "red";
     }
     });
 
+    function checkAnswer(){
+        const remainingChoices = document.querySelectorAll(".wrong-option");
+        const scoreModifier = remainingChoices.length;
+        o(scoreModifier);
+
+        if (this.textContent == nextQuestion.answer) {
+            if (scoreModifier == 0) {
+                score++;
+            }
+            else if (scoreModifier == 1) {
+                score += 0.75;
+            }
+            else {
+                score += 0.50;
+            }
+            dispalyScore.textContent = score;
+            displayQuestion(); 
+        }
+        else {
+            this.setAttribute("class","wrong-option");
+            if (scoreModifier == 2) {
+                displayQuestion();
+            }
+        }
+    }
+
+    
+
 }
 
-
-//HTML Injection
+//*************** */
+// EVENT LISTERNERS
+//*****************
 nextButton.addEventListener("click", displayQuestion);
 
 //*************** */
