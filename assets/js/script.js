@@ -154,12 +154,20 @@ function o(nion){
 var choiceList = document.querySelector("#choice-list");
 var htmlCurrentQuestionTitle = document.querySelector("#currentQuestionTitle");
 var nextButton = document.querySelector("#nextButton");
-var dispalyScore = document.querySelector("#score");
+var scoreDisplay = document.querySelector("#score");
+var timerDisplay = document.querySelector("#timer");
+var quizForm = document.querySelector("#quiz-form");
 var usedIndexArray = [];
 var nextQuestion = [];
 var answerBlock = [];
 optionButton = "";
 score = 0;
+timeLeft = 5;
+
+//Start States
+scoreDisplay.textContent = score;
+timerDisplay.textContent = timeLeft;
+
 
 //*************** */
 // FUNCTIONS
@@ -195,8 +203,7 @@ function getQuestion() {
 
 //Function that unpacks nextQuestion and renders to screen
 
-function displayQuestion(){
-
+function runQuiz(){
 
     //get the question and answers
     getQuestion();
@@ -241,14 +248,14 @@ function displayQuestion(){
             }
 
             //Render the score and go to the next question
-            dispalyScore.textContent = score;
-            displayQuestion(); 
+            scoreDisplay.textContent = score;
+            runQuiz(); 
         }
         // If user chooses all wrong answers, no points, skip to next question
         else {
             this.setAttribute("class","wrong-option");
             if (scoreModifier == 2) {
-                displayQuestion();
+                runQuiz();
             }
         }
     }
@@ -257,10 +264,27 @@ function displayQuestion(){
 
 }
 
+function quizTimer() {
+    var timeInterval = setInterval(function() {
+    timeLeft--;
+    timerDisplay.textContent = timeLeft;
+    if (timeLeft < 1) {
+        o("times up");
+        quizForm.innerHTML = ` `;
+        clearInterval(timeInterval);
+    }
+    },1000);
+}
+
+function startQuiz(){
+    quizTimer();
+    runQuiz();
+}
+
 //*************** */
 // EVENT LISTERNERS
 //*****************
-nextButton.addEventListener("click", displayQuestion);
+nextButton.addEventListener("click", startQuiz);
 
 //*************** */
 // USER STORIES I NEED TO WRITE 
