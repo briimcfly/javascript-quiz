@@ -153,21 +153,57 @@ function o(nion){
 
 var choiceList = document.querySelector("#choice-list");
 var htmlCurrentQuestionTitle = document.querySelector("#currentQuestionTitle");
-var nextButton = document.querySelector("#nextButton");
+var startButton = document.querySelector("#start-button");
+var skipButton = document.querySelector("#next-button");
+var quizLanding = document.querySelector("#quiz-landing");
+
 var scoreDisplay = document.querySelector("#score");
 var timerDisplay = document.querySelector("#timer");
 var quizForm = document.querySelector("#quiz-form");
+
 var usedIndexArray = [];
 var nextQuestion = [];
 var answerBlock = [];
 optionButton = "";
-score = 0;
-timeLeft = 5;
 
 //Start States
-scoreDisplay.textContent = score;
-timerDisplay.textContent = timeLeft;
 
+function startQuiz(){
+    quizForm.hidden = false;
+    quizLanding.hidden = true;
+    score = 0;
+    timeLeft = 20;
+    scoreDisplay.textContent = score;
+    timerDisplay.textContent = timeLeft;
+    quizTimer();
+    renderQuestion();
+}
+
+function finishQuiz(){
+    quizForm.hidden = true;
+    quizLanding.hidden = false;
+    timeLeft = 0;
+    usedIndexArray = [];
+}
+
+function calculatePoints(){
+    //Possible Points Check. Get a count of "Incorrect Choices"
+    let remainingChoices = document.querySelectorAll(".wrong-option");
+    let scoreModifier = remainingChoices.length;
+
+    // No Wrong.. Give a point
+    if (scoreModifier == 0) {
+        score++;
+    }
+    // One Wrong.. 
+    else if (scoreModifier == 1) {
+        score += 0.75;
+    }
+    //Last Chance
+    else {
+        score += 0.50;
+    }
+}
 
 //*************** */
 // FUNCTIONS
@@ -181,21 +217,18 @@ function getQuestion() {
     let ranIndexNumber = Math.floor(Math.random() * quizArray.length);
 
     //Check to make sure question hasn't already been asked
-    if (usedIndexArray.includes(ranIndexNumber)) {
-        if (usedIndexArray.length == 20) {
-            alert("Quiz Over");
-        }
-        else {
-            getQuestion();
-            return;
-        }
+    if (usedIndexArray.includes(ranIndexNumber)) {   
+        getQuestion();
     }
     //if not, add to the "Don't Ask Again" array and Return Question
     else {
+        //add random number to used index array so it wont be asked again
         usedIndexArray.push(ranIndexNumber);
+        //grab a question object from the Quiz Array
         nextQuestion = quizArray[ranIndexNumber];
+        //turn Question Object into Array
         answerBlock = [nextQuestion.answer, nextQuestion.option2, nextQuestion.option3, nextQuestion.option4,];
-        //shuffle the array to avoid patterns
+        //Shuffle the array to avoid patterns
         answerBlock.sort(() => Math.random() - 0.5);
         return nextQuestion;
     }
@@ -203,8 +236,7 @@ function getQuestion() {
 
 //Function that unpacks nextQuestion and renders to screen
 
-function runQuiz(){
-
+function renderQuestion(){
     //get the question and answers
     getQuestion();
 
@@ -217,7 +249,8 @@ function runQuiz(){
     optionButton.textContent = option;
     choiceList.appendChild(optionButton);
     optionButton.addEventListener("click", checkAnswer);
-
+    
+    
     
     //Cheater Code for Testing. Remove before final push.
     if (optionButton.textContent == nextQuestion.answer) {
@@ -226,40 +259,33 @@ function runQuiz(){
     });
 
 
-//Function that checks the answer and apply a score 
+    //Function that checks the answer and apply a score 
     function checkAnswer(){
-        //Possible Points Check. Get a count of "Incorrect Choices"
-        let remainingChoices = document.querySelectorAll(".wrong-option");
-        let scoreModifier = remainingChoices.length;
-
         //If the selected Answer is right. Calculate score
         if (this.textContent == nextQuestion.answer) {
-            // No Wrong.. Give a point
-            if (scoreModifier == 0) {
-                score++;
-            }
-            // One Wrong.. 
-            else if (scoreModifier == 1) {
-                score += 0.75;
-            }
-            //Last Chance
-            else {
-                score += 0.50;
-            }
-
-            //Render the score and go to the next question
+            calculatePoints();
             scoreDisplay.textContent = score;
-            runQuiz(); 
+            if(usedIndexArray.length == quizArray.length){
+                finishQuiz();
+            }
+            else{
+                renderQuestion();
+            }
         }
         // If user chooses all wrong answers, no points, skip to next question
         else {
             this.setAttribute("class","wrong-option");
-            if (scoreModifier == 2) {
-                runQuiz();
-            }
+            
         }
     }
 
+    //Allow user to skip questions
+    if(usedIndexArray.length == quizArray.length) {
+        skipButton.textContent = "Finish Quiz";
+        skipButton.removeEventListener("click", renderQuestion);
+        skipButton.addEventListener("click",finishQuiz);
+    }
+    skipButton.addEventListener("click", renderQuestion);
     
 
 }
@@ -269,22 +295,18 @@ function quizTimer() {
     timeLeft--;
     timerDisplay.textContent = timeLeft;
     if (timeLeft < 1) {
-        o("times up");
-        quizForm.innerHTML = ` `;
+        finishQuiz();
         clearInterval(timeInterval);
     }
-    },1000);
+    },1000); 
 }
 
-function startQuiz(){
-    quizTimer();
-    runQuiz();
-}
 
 //*************** */
 // EVENT LISTERNERS
 //*****************
-nextButton.addEventListener("click", startQuiz);
+quizForm.hidden = true;
+startButton.addEventListener("click", startQuiz);
 
 //*************** */
 // USER STORIES I NEED TO WRITE 
