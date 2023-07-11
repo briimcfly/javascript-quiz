@@ -181,7 +181,6 @@ leaderBoard = [
     {name: "John Carmack", leaderScore: 10},
     {name: "Guido van Rossum", leaderScore: 7},
     {name: "Marissa Mayer", leaderScore: 6},
-    {name: "Satoshi Nakamoto", leaderScore: 2},
     {name: "Hedy Lamarr", leaderScore: 1}
 ];
 
@@ -200,8 +199,13 @@ if (leaderBoardStorage !== null) {
 
 //Store the score detals into Local Storage
 function storeScore() { 
-    saveButton.addEventListener("click", function() {
+    saveButton.addEventListener("click", function(event) {
         var inputEl = document.querySelector("#user-input").value;
+        
+        if (inputEl === "") {
+            inputEl = "Anonymous Player";
+        }
+        console.log(inputEl);
         var leaderboardEntry = {
             name: inputEl,
             leaderScore: score
