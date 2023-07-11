@@ -181,8 +181,8 @@ leaderBoard = [
     {name: "John Carmack", leaderScore: 10},
     {name: "Guido van Rossum", leaderScore: 7},
     {name: "Marissa Mayer", leaderScore: 6},
-    {name: "Satoshi Nakamoto", leaderScore: 5},
-    {name: "Hedy Lamarr", leaderScore: 2}
+    {name: "Satoshi Nakamoto", leaderScore: 2},
+    {name: "Hedy Lamarr", leaderScore: 1}
 ];
 
 //Go get scores from Local Storage or an empty array... 
@@ -358,7 +358,8 @@ function renderQuestion(){
         // If user chooses all wrong answers, no points, skip to next question
         else {
             this.setAttribute("class","wrong-option");
-            resultDisplay("Wrong");
+            loseTime(5);
+            resultDisplay("Wrong, -5 Seconds");
             
 
             possiblePoints -= 0.25;
@@ -390,10 +391,14 @@ function renderQuestion(){
 
 }
 
+function loseTime(seconds) {
+    timeLeft -= seconds;
+}
+
 // var timeInterval;
 function startTimer() {
     timeInterval = setInterval(function() {
-        timeLeft--;
+        loseTime(1);
         timerDisplay.textContent = timeLeft;
         if (timeLeft < 1) {
             stopTimer();
