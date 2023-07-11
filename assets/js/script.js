@@ -158,11 +158,14 @@ var quizForm = document.querySelector("#quiz-form");
 var resultSubmission = document.querySelector("#result-submission");
 var saveButton = document.querySelector("#save");
 var possiblePointsEl = document.querySelector("#possible-points");
+var answerResultEl = document.querySelector("#answer-result");
+
 var possiblePoints = 1;
 var usedIndexArray = [];
 var nextQuestion = [];
 var answerBlock = [];
 optionButton = "";
+answerResultEl.style.display = "none";
 
 
 
@@ -326,6 +329,7 @@ function renderQuestion(){
     function checkAnswer(){
         //If the selected Answer is right. Calculate score
         if (this.textContent == nextQuestion.answer) {
+            resultDisplay("Correct");
             calculatePoints();
             scoreDisplay.textContent = score;
             if(usedIndexArray.length == quizArray.length){
@@ -338,6 +342,9 @@ function renderQuestion(){
         // If user chooses all wrong answers, no points, skip to next question
         else {
             this.setAttribute("class","wrong-option");
+            resultDisplay("Wrong");
+            
+
             possiblePoints -= 0.25;
             possiblePointsEl.textContent = possiblePoints;
 
@@ -376,6 +383,15 @@ function startTimer() {
             stopTimer();
         }
     },1000);
+}
+
+function resultDisplay(content){
+    answerResultEl.style.display = "block";
+    answerResultEl.textContent = content;
+
+    setTimeout(function(){
+        answerResultEl.style.display = "none";
+    }, 1000)
 }
 
 function stopTimer() {
