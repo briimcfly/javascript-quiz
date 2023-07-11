@@ -8,11 +8,11 @@ const quizArray = [
     option4: "Sending emails"
 },
 {
-    question: "Which keyword is used to declare a variable in JavaScript?",
-    answer: "all of the above",
-    option2: "const",
-    option3: "let",
-    option4: "var"
+    question: "In which HTML element do we put the Javascript?",
+    answer: "<script>",
+    option2: `<javascript>`,
+    option3: `<js>`,
+    option4: "<interactions>"
 },
 {
     question:`What does the "DOM" stand for in JavaScript?`,
@@ -43,9 +43,9 @@ const quizArray = [
     option4:"insert()",
 },
 {
-    question:"How do you check if two variables are equal value in JavaScript?",
-    answer:"a == b",
-    option2:"a === b",
+    question:"How do you check if two variables are equal in value and data type in JavaScript?",
+    answer:"a === b",
+    option2:"a == b",
     option3:"a = b",
     option4:"a != b",
 },
