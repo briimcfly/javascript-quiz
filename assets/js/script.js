@@ -160,28 +160,74 @@ var highScores = document.querySelector("#high-scores");
 var scoreDisplay = document.querySelector("#score");
 var timerDisplay = document.querySelector("#timer");
 var quizForm = document.querySelector("#quiz-form");
-var resultSubmission = document.querySelector("#result-submission");
 
-var leaderBoard = [];
-leaderBoard = JSON.parse(localStorage.getItem("leaderBoard"));
+leaderBoard = [
+    {name: "test", leaderScore: 0},
+    {name: "test1", leaderScore: 0},
+    {name: "test2", leaderScore: 0},
+    {name: "test3", leaderScore: 0},
+    {name: "test4", leaderScore: 0},
+    {name: "test5", leaderScore: 0},
+    {name: "test6", leaderScore: 0},
+    {name: "test7", leaderScore: 0},
+    {name: "test8", leaderScore: 0},
+    {name: "test9", leaderScore: 0},
+    {name: "test10", leaderScore: 0}
+];
+leaderBoardStorage = JSON.parse(localStorage.getItem("leaderBoardStorage"));
+
+if (leaderBoardStorage !== null) {
+   leaderBoard = leaderBoard.concat(leaderBoardStorage);
+}
+
+
+
+o(leaderBoardStorage);
+o(leaderBoard);
+
 var usedIndexArray = [];
 var nextQuestion = [];
 var answerBlock = [];
 optionButton = "";
 
-// function displayLeaderboard(){
-//     leaderBoard = JSON.parse(localStorage.getItem("leaderBoard"));
-//     if(leaderBoard !== null) {
-//         for (i = 0; i < 10 || leaderBoard.length; i++){
-//             let leaderBoardEntry = document.createElement("p");
+var resultSubmission = document.querySelector("#result-submission");
 
-//             highScores.appendChild(leaderBoard.name);
-//         }
-//     }
-//     else{
-//         return;
-//     }
-// }
+var saveButton = document.querySelector("#save");
+
+function storeScore() {
+    
+    saveButton.addEventListener("click", function() {
+
+        var inputEl = document.querySelector("#user-input").value;
+    
+        var leaderboardEntry = {
+            name: inputEl,
+            leaderScore: score
+        };
+    
+        leaderBoard.push(leaderboardEntry);
+    
+        localStorage.setItem("leaderBoardStorage", JSON.stringify(leaderBoard));
+    
+    });
+  }
+
+  function displayLeaderboard(){
+    function compare(x,y) {
+        return y.leaderScore - x.leaderScore;
+    }
+    leaderBoard.sort(compare);
+    if(leaderBoard !== null) {
+        for(i = 0; i < leaderBoard.length && i < 10; i++) {
+            let row = document.createElement("p");
+            highScores.appendChild(row);
+            row.textContent = `Name: ${leaderBoard[i].name} Score: ${leaderBoard[i].leaderScore}`;
+        }
+    }
+    else {
+        return;
+    }
+}
 
 
 function startQuiz(){
@@ -208,21 +254,7 @@ function finishQuiz(){
     storeScore();
 }
 
-function storeScore() {
-    var inputEl = document.querySelector("#user-input");
-    var userName = inputEl.value.trim();
-  
-    var quizResults = { name: userName, leaderScore: score };
-  
-    leaderBoard.push(quizResults);
-    localStorage.setItem("user", JSON.stringify(leaderBoard));
-  }
 
-
-resultSubmission.addEventListener("submit", function(event) {
-    event.preventDefault();
-    storeScore();
-});
 
 
 function calculatePoints(){
@@ -353,7 +385,7 @@ function stopTimer() {
 //*****************
 quizForm.hidden = true;
 resultSubmission.hidden = true;
-// displayLeaderboard();
+displayLeaderboard();
 startButton.addEventListener("click", startQuiz);
 
 //*************** */
