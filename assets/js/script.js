@@ -142,13 +142,8 @@ const quizArray = [
 }
 ]
 
-//quick console log function.
-function o(nion){
-    console.log(nion);
-}
-
 //*************** */
-// GLOBAL VARIABLES
+// GLOBAL VARIABLES & STATES
 //*****************
 
 var choiceList = document.querySelector("#choice-list");
@@ -162,11 +157,15 @@ var timerDisplay = document.querySelector("#timer");
 var quizForm = document.querySelector("#quiz-form");
 var resultSubmission = document.querySelector("#result-submission");
 var saveButton = document.querySelector("#save");
-
+var possiblePointsEl = document.querySelector("#possible-points");
+var possiblePoints = 1;
 var usedIndexArray = [];
 var nextQuestion = [];
 var answerBlock = [];
 optionButton = "";
+
+
+
 
 //Initial Leaderboard with Fake Scores but Cool People. 
 leaderBoard = [
@@ -255,8 +254,8 @@ function finishQuiz(){
 //Award Points per Question
 function calculatePoints(){
     //Possible Points Check. Get a count of "Incorrect Choices"
-    let remainingChoices = document.querySelectorAll(".wrong-option");
-    let scoreModifier = remainingChoices.length;
+    var remainingChoices = document.querySelectorAll(".wrong-option");
+    scoreModifier = remainingChoices.length;
 
     // No Wrong.. Give a point
     if (scoreModifier == 0) {
@@ -267,14 +266,15 @@ function calculatePoints(){
         score += 0.75;
     }
     //Last Chance
-    else {
+    else if (scoreModifier == 2) {
         score += 0.50;
     }
-}
 
+}
 
 //Function that gets the question from the quizArray once user presses button
 function getQuestion() {
+    possiblePoints = 1;
     //clear the previous batch of answers
     choiceList.innerHTML = '';
     //Find a random index that hasn't already been used.  
@@ -298,6 +298,7 @@ function getQuestion() {
     }
 }
 
+
 //Function that unpacks nextQuestion and renders to screen
 function renderQuestion(){
     //get the question and answers
@@ -305,6 +306,7 @@ function renderQuestion(){
 
     //add the question to the h2
     htmlCurrentQuestionTitle.textContent = `${nextQuestion.question}`;
+    possiblePointsEl.textContent = possiblePoints;
 
     //for every Answer Option, create and append to the Choice List
     answerBlock.forEach((option) => {
@@ -312,9 +314,7 @@ function renderQuestion(){
     optionButton.textContent = option;
     choiceList.appendChild(optionButton);
     optionButton.addEventListener("click", checkAnswer);
-    
-    
-    
+     
     //Cheater Code for Testing. Remove before final push.
     if (optionButton.textContent == nextQuestion.answer) {
         optionButton.style.backgroundColor = "red";
@@ -338,18 +338,32 @@ function renderQuestion(){
         // If user chooses all wrong answers, no points, skip to next question
         else {
             this.setAttribute("class","wrong-option");
-            
-        }
+            possiblePoints -= 0.25;
+            possiblePointsEl.textContent = possiblePoints;
+
+            if (possiblePoints == 0.25) {
+                if(usedIndexArray.length == quizArray.length){
+                    finishQuiz();
+                }
+                else{
+                    renderQuestion();
+                }
+            }
+
+            }     
+        
+
     }
 
-    //Allow user to skip questions
+
+    //Allow user to skip questions until all questions have been asked. 
     if(usedIndexArray.length == quizArray.length) {
         skipButton.textContent = "Finish Quiz";
         skipButton.removeEventListener("click", renderQuestion);
         skipButton.addEventListener("click",finishQuiz);
     }
     skipButton.addEventListener("click", renderQuestion);
-    
+        
 
 }
 
@@ -368,17 +382,13 @@ function stopTimer() {
     finishQuiz();
 }
 
+//START APPLICATION
 
-
-
-
-//*************** */
-// EVENT LISTERNERS
-//*****************
 quizForm.hidden = true;
 resultSubmission.hidden = true;
 displayLeaderboard();
 startButton.addEventListener("click", startQuiz);
+
 
 //*************** */
 // USER STORIES I NEED TO WRITE 
