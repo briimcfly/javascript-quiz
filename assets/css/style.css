@@ -23,12 +23,27 @@ header {
     padding-bottom:24px;
 }
 
-.option-btn {
-    padding:8px;
+button {
+    padding:16px 24px;
     border-radius:4px;
+    background-color:#081A0D;
+    border:1px solid #86D7A5;
+    color:#86D7A5;
+    font-family: 'VT323', monospace;
+    font-size:20px;
+}
+
+button:hover {
+    border-bottom:3px solid;
+    cursor:pointer;
 }
 
 .wrong-option {
     text-decoration: line-through;
+}
+
+#choice-list {
+    display:flex;
+    flex-direction:column;
 }
 

@@ -203,7 +203,7 @@ function storeScore() {
         var inputEl = document.querySelector("#user-input").value;
         
         if (inputEl === "") {
-            inputEl = "Anonymous Player";
+            inputEl = "Anonymous";
         }
         console.log(inputEl);
         var leaderboardEntry = {
@@ -260,7 +260,7 @@ function startQuiz(){
     timerDisplay.textContent = timeLeft;
     startTimer();
     renderQuestion();
-    skipButton.textContent = "Skip Question";
+    skipButton.textContent = "> Skip Question";
     skipButton.removeEventListener("click", finishQuiz);
     skipButton.addEventListener("click",nextQuestion);
 }
@@ -338,10 +338,6 @@ function renderQuestion(){
     choiceList.appendChild(optionButton);
     optionButton.addEventListener("click", checkAnswer);
      
-    //Cheater Code for Testing. Remove before final push.
-    if (optionButton.textContent == nextQuestion.answer) {
-        optionButton.style.backgroundColor = "red";
-    }
     });
 
 
@@ -362,8 +358,10 @@ function renderQuestion(){
         // If user chooses all wrong answers, no points, skip to next question
         else {
             this.setAttribute("class","wrong-option");
+            this.removeEventListener("click", checkAnswer);
             loseTime(5);
             resultDisplay("Wrong, -5 Seconds");
+            
             
 
             possiblePoints -= 0.25;
@@ -386,7 +384,7 @@ function renderQuestion(){
 
     //Allow user to skip questions until all questions have been asked. 
     if(usedIndexArray.length == quizArray.length) {
-        skipButton.textContent = "Finish Quiz";
+        skipButton.textContent = "> Finish Quiz";
         skipButton.removeEventListener("click", renderQuestion);
         skipButton.addEventListener("click",finishQuiz);
     }
