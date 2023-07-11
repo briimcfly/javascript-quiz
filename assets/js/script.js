@@ -156,35 +156,74 @@ var htmlCurrentQuestionTitle = document.querySelector("#currentQuestionTitle");
 var startButton = document.querySelector("#start-button");
 var skipButton = document.querySelector("#next-button");
 var quizLanding = document.querySelector("#quiz-landing");
-
+var highScores = document.querySelector("#high-scores");
 var scoreDisplay = document.querySelector("#score");
 var timerDisplay = document.querySelector("#timer");
 var quizForm = document.querySelector("#quiz-form");
+var resultSubmission = document.querySelector("#result-submission");
 
+var leaderBoard = [];
+leaderBoard = JSON.parse(localStorage.getItem("leaderBoard"));
 var usedIndexArray = [];
 var nextQuestion = [];
 var answerBlock = [];
 optionButton = "";
 
-//Start States
+// function displayLeaderboard(){
+//     leaderBoard = JSON.parse(localStorage.getItem("leaderBoard"));
+//     if(leaderBoard !== null) {
+//         for (i = 0; i < 10 || leaderBoard.length; i++){
+//             let leaderBoardEntry = document.createElement("p");
+
+//             highScores.appendChild(leaderBoard.name);
+//         }
+//     }
+//     else{
+//         return;
+//     }
+// }
+
 
 function startQuiz(){
+    usedIndexArray = [];
+    score = 0;
+    timeLeft = 60;
     quizForm.hidden = false;
     quizLanding.hidden = true;
-    score = 0;
-    timeLeft = 20;
     scoreDisplay.textContent = score;
     timerDisplay.textContent = timeLeft;
-    quizTimer();
+    startTimer();
     renderQuestion();
+    skipButton.textContent = "Skip Question";
+    skipButton.removeEventListener("click", finishQuiz);
+    skipButton.addEventListener("click",nextQuestion);
 }
 
 function finishQuiz(){
-    quizForm.hidden = true;
-    quizLanding.hidden = false;
-    timeLeft = 0;
+    clearInterval(timeInterval);
     usedIndexArray = [];
+    quizForm.hidden = true;
+    resultSubmission.hidden = false;
+    // displayLeaderboard();
+    storeScore();
 }
+
+function storeScore() {
+    var inputEl = document.querySelector("#user-input");
+    var userName = inputEl.value.trim();
+  
+    var quizResults = { name: userName, leaderScore: score };
+  
+    leaderBoard.push(quizResults);
+    localStorage.setItem("user", JSON.stringify(leaderBoard));
+  }
+
+
+resultSubmission.addEventListener("submit", function(event) {
+    event.preventDefault();
+    storeScore();
+});
+
 
 function calculatePoints(){
     //Possible Points Check. Get a count of "Incorrect Choices"
@@ -289,23 +328,32 @@ function renderQuestion(){
     
 
 }
+var timeInterval;
 
-function quizTimer() {
-    var timeInterval = setInterval(function() {
-    timeLeft--;
-    timerDisplay.textContent = timeLeft;
-    if (timeLeft < 1) {
-        finishQuiz();
-        clearInterval(timeInterval);
-    }
-    },1000); 
+function startTimer() {
+    timeInterval = setInterval(function() {
+        timeLeft--;
+        timerDisplay.textContent = timeLeft;
+        if (timeLeft < 1) {
+            stopTimer();
+        }
+    },1000);
 }
+
+function stopTimer() {
+    finishQuiz();
+}
+
+
+
 
 
 //*************** */
 // EVENT LISTERNERS
 //*****************
 quizForm.hidden = true;
+resultSubmission.hidden = true;
+// displayLeaderboard();
 startButton.addEventListener("click", startQuiz);
 
 //*************** */
