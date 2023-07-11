@@ -223,9 +223,25 @@ function storeScore() {
 
     //Give top 10 Leaderboard Results. 
     for(i = 0; i < 10; i++) {
+        //create the P (which will be used as the container)
         let row = document.createElement("p");
+        //create spans for styling
+        let rowNameSpan = document.createElement("span");
+        let rowScoreSpan = document.createElement("span");
+        rowNameSpan.textContent = "Name: ";
+        rowNameSpan.id = "leader-name";
+        rowScoreSpan.textContent = "Score: ";
+        rowScoreSpan.id = "leader-score";
+        //get the name and score from Leaderboard
+        let rowName = document.createTextNode(`${leaderBoard[i].name} `);
+        let rowScore = document.createTextNode(`${leaderBoard[i].leaderScore}`);
+
+        //build the p tag left to right
+        row.appendChild(rowNameSpan);
+        row.appendChild(rowName);
+        row.appendChild(rowScoreSpan);
+        row.appendChild(rowScore);
         highScores.appendChild(row);
-        row.textContent = `Name: ${leaderBoard[i].name} Score: ${leaderBoard[i].leaderScore}`;
     }
 }
 
