@@ -160,76 +160,74 @@ var highScores = document.querySelector("#high-scores");
 var scoreDisplay = document.querySelector("#score");
 var timerDisplay = document.querySelector("#timer");
 var quizForm = document.querySelector("#quiz-form");
-
-leaderBoard = [
-    {name: "test", leaderScore: 0},
-    {name: "test1", leaderScore: 0},
-    {name: "test2", leaderScore: 0},
-    {name: "test3", leaderScore: 0},
-    {name: "test4", leaderScore: 0},
-    {name: "test5", leaderScore: 0},
-    {name: "test6", leaderScore: 0},
-    {name: "test7", leaderScore: 0},
-    {name: "test8", leaderScore: 0},
-    {name: "test9", leaderScore: 0},
-    {name: "test10", leaderScore: 0}
-];
-leaderBoardStorage = JSON.parse(localStorage.getItem("leaderBoardStorage"));
-
-if (leaderBoardStorage !== null) {
-   leaderBoard = leaderBoard.concat(leaderBoardStorage);
-}
-
-
-
-o(leaderBoardStorage);
-o(leaderBoard);
+var resultSubmission = document.querySelector("#result-submission");
+var saveButton = document.querySelector("#save");
 
 var usedIndexArray = [];
 var nextQuestion = [];
 var answerBlock = [];
 optionButton = "";
 
-var resultSubmission = document.querySelector("#result-submission");
+//Initial Leaderboard with Fake Scores but Cool People. 
+leaderBoard = [
+    {name: "Ada Lovelace", leaderScore: 19},
+    {name: "Grace Hopper", leaderScore: 18},
+    {name: "Alan Turing", leaderScore: 16},
+    {name: "Linus Torvalds", leaderScore: 16},
+    {name: "Margaret Hamilton", leaderScore: 14},
+    {name: "Tim Berners-Lee", leaderScore: 12},
+    {name: "John Carmack", leaderScore: 10},
+    {name: "Guido van Rossum", leaderScore: 7},
+    {name: "Marissa Mayer", leaderScore: 6},
+    {name: "Satoshi Nakamoto", leaderScore: 5},
+    {name: "Hedy Lamarr", leaderScore: 2}
+];
 
-var saveButton = document.querySelector("#save");
+//Go get scores from Local Storage or an empty array... 
+var leaderBoardStorage = JSON.parse(localStorage.getItem("leaderBoardStorage")) || [];
 
-function storeScore() {
-    
+//If Local Storage has data, add it to the Leaderboard
+if (leaderBoardStorage !== null) {
+   leaderBoard = leaderBoard.concat(leaderBoardStorage);
+}
+
+
+//*************** */
+// FUNCTIONS
+//*****************
+
+//Store the score detals into Local Storage
+function storeScore() { 
     saveButton.addEventListener("click", function() {
-
         var inputEl = document.querySelector("#user-input").value;
-    
         var leaderboardEntry = {
             name: inputEl,
             leaderScore: score
         };
-    
-        leaderBoard.push(leaderboardEntry);
-    
-        localStorage.setItem("leaderBoardStorage", JSON.stringify(leaderBoard));
+
+        leaderBoardStorage.push(leaderboardEntry);
+        localStorage.setItem("leaderBoardStorage", JSON.stringify(leaderBoardStorage));
     
     });
   }
 
+// Display the Leaderboard 
   function displayLeaderboard(){
+    // Sort the leaderboard by Score
     function compare(x,y) {
         return y.leaderScore - x.leaderScore;
     }
     leaderBoard.sort(compare);
-    if(leaderBoard !== null) {
-        for(i = 0; i < leaderBoard.length && i < 10; i++) {
-            let row = document.createElement("p");
-            highScores.appendChild(row);
-            row.textContent = `Name: ${leaderBoard[i].name} Score: ${leaderBoard[i].leaderScore}`;
-        }
-    }
-    else {
-        return;
+
+    //Give top 10 Leaderboard Results. 
+    for(i = 0; i < 10; i++) {
+        let row = document.createElement("p");
+        highScores.appendChild(row);
+        row.textContent = `Name: ${leaderBoard[i].name} Score: ${leaderBoard[i].leaderScore}`;
     }
 }
 
-
+//Reset / Layout for Starting the Quiz
 function startQuiz(){
     usedIndexArray = [];
     score = 0;
@@ -245,18 +243,16 @@ function startQuiz(){
     skipButton.addEventListener("click",nextQuestion);
 }
 
+//End the Quiz, Gather Results
 function finishQuiz(){
     clearInterval(timeInterval);
     usedIndexArray = [];
     quizForm.hidden = true;
     resultSubmission.hidden = false;
-    // displayLeaderboard();
     storeScore();
 }
 
-
-
-
+//Award Points per Question
 function calculatePoints(){
     //Possible Points Check. Get a count of "Incorrect Choices"
     let remainingChoices = document.querySelectorAll(".wrong-option");
@@ -276,9 +272,6 @@ function calculatePoints(){
     }
 }
 
-//*************** */
-// FUNCTIONS
-//*****************
 
 //Function that gets the question from the quizArray once user presses button
 function getQuestion() {
@@ -306,7 +299,6 @@ function getQuestion() {
 }
 
 //Function that unpacks nextQuestion and renders to screen
-
 function renderQuestion(){
     //get the question and answers
     getQuestion();
@@ -360,8 +352,8 @@ function renderQuestion(){
     
 
 }
-var timeInterval;
 
+// var timeInterval;
 function startTimer() {
     timeInterval = setInterval(function() {
         timeLeft--;
