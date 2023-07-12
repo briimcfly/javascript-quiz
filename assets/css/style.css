@@ -2,8 +2,11 @@
  --blue:#9DDDFF;
  --green: #86D7A5;
  --dark-green: #081A0D;
+ --black: #06140A;
  --computer-font: 'VT323', monospace;
 }
+
+/* Global Styles */
 
 html {
     background-color:var(--dark-green);
@@ -35,13 +38,8 @@ header {
     margin-bottom:60px;
     gap:16px;
 }
-#option-block {
-    display:flex;
-    flex-direction: column;
-    align-items: self-start;
-    gap:8px;
-    padding-bottom:24px;
-}
+
+
 
 button {
     padding:16px 24px;
@@ -62,6 +60,15 @@ button:active {
     border-bottom:2px solid;
 }
 
+.center-content {
+    flex-direction:column;
+    gap:16px;
+}
+
+
+
+/* Quiz Form */
+
 .wrong-option {
     text-decoration: line-through;
 }
@@ -78,14 +85,16 @@ button:active {
     margin-bottom:16px;
 }
 
-#leader-name, #leader-score {
-    color: var(--blue);
+#option-block {
+    display:flex;
+    flex-direction: column;
+    align-items: self-start;
+    gap:8px;
+    padding-bottom:24px;
 }
 
-.center-content {
-    flex-direction:column;
-    gap:16px;
-}
+
+/* Show & Hide */
 
 .hidden {
     display:none;
@@ -95,8 +104,10 @@ button:active {
     display:flex;
 }
 
+/* Leaderboard Styles */
+
 input {
-    background-color: #06140A;
+    background-color: var(--black);
     border: 1px solid var(--green);
     font-size: 32px;
     color: white;
@@ -105,7 +116,7 @@ input {
 
 input[type=text]:focus {
     border: 1px solid var(--blue);
-    background-color:#06140A;
+    background-color:var(--black);
     outline:none;
 }
 
@@ -117,4 +128,8 @@ input[type=text]:focus {
 
 #high-scores p {
     font-size:18px;
+}
+
+#leader-name, #leader-score {
+    color: var(--blue);
 }
