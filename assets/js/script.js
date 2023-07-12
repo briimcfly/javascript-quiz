@@ -361,18 +361,16 @@ function renderQuestion(){
                 renderQuestion();
             }
         }
-        // If user chooses all wrong answers, no points, skip to next question
+        // Time Penalties for Wrong Answers. 
         else {
             this.setAttribute("class","wrong-option");
+            //Don't allow user to click wrong answer multiple times
             this.removeEventListener("click", checkAnswer);
             loseTime(5);
             resultDisplay("Wrong, -5 Seconds");
-            
-            
-
             possiblePoints -= 0.25;
             possiblePointsEl.textContent = `Question Value: ${possiblePoints}`;
-
+            //If only the correct answer remains, skip. No points for you!
             if (possiblePoints == 0.25) {
                 if(usedIndexArray.length == quizArray.length){
                     finishQuiz();
@@ -381,12 +379,8 @@ function renderQuestion(){
                     renderQuestion();
                 }
             }
-
             }     
-        
-
     }
-
 
     //Allow user to skip questions until all questions have been asked. 
     if(usedIndexArray.length == quizArray.length) {
@@ -395,15 +389,14 @@ function renderQuestion(){
         skipButton.addEventListener("click",finishQuiz);
     }
     skipButton.addEventListener("click", renderQuestion);
-        
-
 }
 
+//A function that removes an ammount of time from Time Left
 function loseTime(seconds) {
     timeLeft -= seconds;
 }
 
-// var timeInterval;
+// A function that sets the Quiz Time
 function startTimer() {
     timeInterval = setInterval(function() {
         loseTime(1);
@@ -414,6 +407,7 @@ function startTimer() {
     },1000);
 }
 
+// A function that momentarily displays the "Right" or "Wrong" text.
 function resultDisplay(content){
     answerResultEl.style.display = "block";
     answerResultEl.textContent = content;
@@ -423,33 +417,26 @@ function resultDisplay(content){
     }, 1000)
 }
 
+// Stop the Quiz
 function stopTimer() {
     finishQuiz();
 }
 
-//START APPLICATION
-
-hide(resultSubmission);
-hide(quizForm);
-show(quizLanding);
-displayLeaderboard();
-startButton.addEventListener("click", startQuiz);
-
-
-//*************** */
-// USER STORIES I NEED TO WRITE 
-//*****************
-
+// Function to hide certain views
 function hide(element){
     element.classList.remove("visible");
     element.classList.add("hidden");
 }
 
+// Function to show certain views
 function show(element){
     element.classList.remove("hidden");
     element.classList.add("visible");
 }
 
-
-
-// need to write a script to set "all of the above" at the bottom... 
+//START APPLICATION
+hide(resultSubmission);
+hide(quizForm);
+show(quizLanding);
+displayLeaderboard();
+startButton.addEventListener("click", startQuiz);
