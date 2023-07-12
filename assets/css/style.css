@@ -9,11 +9,22 @@ html {
     background-color:var(--dark-green);
     color:var(--green);
     font-family: var(--computer-font);
-    margin:24px;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding:32px;
+}
+
 
 h1 {
     font-size:36px;
+}
+
+h2, p {
+    margin:0;
 }
 
 header {
@@ -21,6 +32,8 @@ header {
     flex-direction: column;
     align-items: center;
     line-height:0;
+    margin-bottom:60px;
+    gap:16px;
 }
 #option-block {
     display:flex;
@@ -56,9 +69,52 @@ button:active {
 #choice-list {
     display:flex;
     flex-direction:column;
+    gap:16px;
 }
 
 .primary-button {
     color: var(--blue);
     border-color: var(--blue);
+    margin-bottom:16px;
+}
+
+#leader-name, #leader-score {
+    color: var(--blue);
+}
+
+.center-content {
+    flex-direction:column;
+    gap:16px;
+}
+
+.hidden {
+    display:none;
+}
+
+.visible {
+    display:flex;
+}
+
+input {
+    background-color: #06140A;
+    border: 1px solid var(--green);
+    font-size: 32px;
+    color: white;
+    font-family: var(--computer-font);
+}
+
+input[type=text]:focus {
+    border: 1px solid var(--blue);
+    background-color:#06140A;
+    outline:none;
+}
+
+#high-scores{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+#high-scores p {
+    font-size:18px;
 }

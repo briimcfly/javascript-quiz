@@ -159,6 +159,7 @@ var resultSubmission = document.querySelector("#result-submission");
 var saveButton = document.querySelector("#save");
 var possiblePointsEl = document.querySelector("#possible-points");
 var answerResultEl = document.querySelector("#answer-result");
+var finalScoreEl = document.querySelector("#final-score");
 
 var possiblePoints = 1;
 var usedIndexArray = [];
@@ -256,10 +257,12 @@ function startQuiz(){
     usedIndexArray = [];
     score = 0;
     timeLeft = 60;
-    quizForm.hidden = false;
-    quizLanding.hidden = true;
-    scoreDisplay.textContent = score;
-    timerDisplay.textContent = timeLeft;
+    // quizForm.hidden = false;
+    // quizLanding.hidden = true;
+    show(quizForm);
+    hide(quizLanding);
+    scoreDisplay.textContent = `Current Score: ${score}`;
+    timerDisplay.textContent = `Time Remaining: ${timeLeft}`;
     startTimer();
     renderQuestion();
     skipButton.textContent = "> Skip Question";
@@ -271,8 +274,9 @@ function startQuiz(){
 function finishQuiz(){
     clearInterval(timeInterval);
     usedIndexArray = [];
-    quizForm.hidden = true;
-    resultSubmission.hidden = false;
+    hide(quizForm);
+    show(resultSubmission);
+    finalScoreEl.textContent = score;
     storeScore();
 }
 
@@ -331,7 +335,7 @@ function renderQuestion(){
 
     //add the question to the h2
     htmlCurrentQuestionTitle.textContent = `${nextQuestion.question}`;
-    possiblePointsEl.textContent = possiblePoints;
+    possiblePointsEl.textContent = `Question Value: ${possiblePoints}`;
 
     //for every Answer Option, create and append to the Choice List
     answerBlock.forEach((option) => {
@@ -349,7 +353,7 @@ function renderQuestion(){
         if (this.textContent == nextQuestion.answer) {
             resultDisplay("Correct");
             calculatePoints();
-            scoreDisplay.textContent = score;
+            scoreDisplay.textContent = `Current Score: ${score}`;
             if(usedIndexArray.length == quizArray.length){
                 finishQuiz();
             }
@@ -367,7 +371,7 @@ function renderQuestion(){
             
 
             possiblePoints -= 0.25;
-            possiblePointsEl.textContent = possiblePoints;
+            possiblePointsEl.textContent = `Question Value: ${possiblePoints}`;
 
             if (possiblePoints == 0.25) {
                 if(usedIndexArray.length == quizArray.length){
@@ -403,7 +407,7 @@ function loseTime(seconds) {
 function startTimer() {
     timeInterval = setInterval(function() {
         loseTime(1);
-        timerDisplay.textContent = timeLeft;
+        timerDisplay.textContent = `Time Remaining: ${timeLeft}`;
         if (timeLeft < 1) {
             stopTimer();
         }
@@ -425,8 +429,9 @@ function stopTimer() {
 
 //START APPLICATION
 
-quizForm.hidden = true;
-resultSubmission.hidden = true;
+hide(resultSubmission);
+hide(quizForm);
+show(quizLanding);
 displayLeaderboard();
 startButton.addEventListener("click", startQuiz);
 
@@ -434,6 +439,17 @@ startButton.addEventListener("click", startQuiz);
 //*************** */
 // USER STORIES I NEED TO WRITE 
 //*****************
+
+function hide(element){
+    element.classList.remove("visible");
+    element.classList.add("hidden");
+}
+
+function show(element){
+    element.classList.remove("hidden");
+    element.classList.add("visible");
+}
+
 
 
 // need to write a script to set "all of the above" at the bottom... 
