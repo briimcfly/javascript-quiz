@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Javascript Quiz</title>
+    <!-- Google Fonts!  -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
     <link rel="stylesheet" href="assets/css/style.css" />
 
   </head>
@@ -16,20 +18,24 @@
         <h1>BRYAN'S FUN JAVASCRIPT QUIZ</h1>
         <h2>VERSION 1.0 07/11/2023</h2> 
     </header>
+    <!-- The Main Quiz Form -->
       <article id = "quiz-form" class = "center-content">
             <h2 id="currentQuestionTitle"></h2>
             <p id = possible-points></p>
+            <!-- The list of available choices -->
               <section id = "choice-list"></section>
             <section id = "score"></section>
             <section id = "timer"></section>
             <button id="next-button" class="primary-button">> Skip Question</button>
         </article>
+        <!-- The default landing view -->
       <article id = "quiz-landing" class = "center-content">
         <button id = "start-button" class="primary-button">> Start Quiz</button>
         <section id = "high-scores">
           <h2>Top 10 Leaderboard</h2>
         </section>
       </article>
+      <!-- The Leaderboard Submission view -->
       <form  id = "result-submission" class = "center-content">
         <h2>Enter Name or Initials for the Leaderboard</h2>
         <p>Your final score was: <span id = "final-score"></span></p>
