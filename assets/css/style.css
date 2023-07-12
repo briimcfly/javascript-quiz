@@ -3,6 +3,7 @@
  --green: #86D7A5;
  --dark-green: #081A0D;
  --black: #06140A;
+ --status: #CCD786;
  --computer-font: 'VT323', monospace;
 }
 
@@ -36,7 +37,7 @@ header {
     align-items: center;
     line-height:0;
     margin-bottom:60px;
-    gap:16px;
+    gap:24px;
 }
 
 
@@ -91,6 +92,13 @@ button:active {
     align-items: self-start;
     gap:8px;
     padding-bottom:24px;
+}
+#currentQuestionTitle {
+    color:var(--blue);
+}
+
+#score, #timer, #possible-points, #answer-result {
+    color:var(--status);
 }
 
 
