@@ -257,8 +257,6 @@ function startQuiz(){
     usedIndexArray = [];
     score = 0;
     timeLeft = 60;
-    // quizForm.hidden = false;
-    // quizLanding.hidden = true;
     show(quizForm);
     hide(quizLanding);
     scoreDisplay.textContent = `Current Score: ${score}`;
