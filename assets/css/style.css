@@ -1,7 +1,14 @@
+:root {
+ --blue:#9DDDFF;
+ --green: #86D7A5;
+ --dark-green: #081A0D;
+ --computer-font: 'VT323', monospace;
+}
+
 html {
-    background-color:#081A0D;
-    color:#86D7A5;
-    font-family: 'VT323', monospace;
+    background-color:var(--dark-green);
+    color:var(--green);
+    font-family: var(--computer-font);
     margin:24px;
 }
 
@@ -26,16 +33,20 @@ header {
 button {
     padding:16px 24px;
     border-radius:4px;
-    background-color:#081A0D;
-    border:1px solid #86D7A5;
-    color:#86D7A5;
-    font-family: 'VT323', monospace;
+    background-color:var(--dark-green);
+    border:1px solid var(--green);
+    color:var(--green);
+    font-family: var(--computer-font);
     font-size:20px;
 }
 
 button:hover {
-    border-bottom:3px solid;
+    border-bottom:4px solid;
     cursor:pointer;
+}
+
+button:active {
+    border-bottom:2px solid;
 }
 
 .wrong-option {
@@ -47,3 +58,7 @@ button:hover {
     flex-direction:column;
 }
 
+.primary-button {
+    color: var(--blue);
+    border-color: var(--blue);
+}

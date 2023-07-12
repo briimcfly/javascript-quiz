@@ -246,6 +246,8 @@ function storeScore() {
         row.appendChild(rowScoreSpan);
         row.appendChild(rowScore);
         highScores.appendChild(row);
+
+
     }
 }
 
